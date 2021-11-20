@@ -1,0 +1,26 @@
+{
+  "name": "employeecorral",
+  "version": "1.0.0",
+  "description": "Create employee roster",
+  "main": "server.js",
+  "dependencies": {
+    "console.table": "^0.10.0",
+    "express": "^4.17.1",
+    "inquirer": "^8.2.0",
+    "mysql2": "^2.3.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RaiderNationBuilder/EmployeeCorral.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RaiderNationBuilder/EmployeeCorral/issues"
+  },
+  "homepage": "https://github.com/RaiderNationBuilder/EmployeeCorral#readme"
+}
