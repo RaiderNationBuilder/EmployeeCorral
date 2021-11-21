@@ -1,12 +1,12 @@
-const express = require('express');
-const router = express.Router();
 const inquirer = require('inquirer')
+const db = require('./db/connection')
+const cTable = require('console.table');
+const mysql = require('mysql2');
 
-router.use(require('./employeeRoutes'));
 
 function introPrompt() {
-    
-    inquirer.prompt([        
+
+    inquirer.prompt([
         {
             type: "list",
             name: "menu",
@@ -22,10 +22,23 @@ function introPrompt() {
             ]
         }
     ]).then(function (answer) {
-      
+        if (answer.menu === "view all departments") {
+            getAllDepartments()
+        }
     })
+}
+
+
+function getAllDepartments(){   
+    console.log("in function") 
+    db.query(
+        `SELECT * FROM department`,
+        function(err, results, fields) {
+            console.log("in function x2")  
+            console.log(fields)
+
+    });
 }
 
 introPrompt();
 
-module.exports = router;
