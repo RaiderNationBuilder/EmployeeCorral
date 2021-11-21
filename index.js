@@ -8,7 +8,9 @@ const seedQuery = fs.readFileSync("db/seed.sql", {
     encoding: "utf-8"
 })
 
-db.connect()
+db.connect(function (err) {
+    if (err) console.log("error connecting: ", err);
+});
 
 // db.query(seedQuery, err => {
 //     if (err) {
@@ -45,15 +47,15 @@ function introPrompt() {
 }
 
 
-function getAllDepartments(){   
-    console.log("in function") 
+function getAllDepartments() {
+    console.log("in function")
     db.query(
         `SELECT * FROM department`,
-        function(err, results, fields) {
-            console.log("in function x2")  
+        function (err, results) {
+            console.log("in function x2")
             console.log("results", results)
-
-    });
+            console.table(results)
+        });
 }
 
 introPrompt();
