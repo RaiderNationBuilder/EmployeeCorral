@@ -2,7 +2,21 @@ const inquirer = require('inquirer')
 const db = require('./db/connection')
 const cTable = require('console.table');
 const mysql = require('mysql2');
+const fs = require('fs')
 
+const seedQuery = fs.readFileSync("db/seed.sql", {
+    encoding: "utf-8"
+})
+
+db.connect()
+
+db.query(seedQuery, err => {
+    if (err) {
+        throw err
+    }
+
+    console.log("db seeded")
+})
 
 function introPrompt() {
 
@@ -22,7 +36,9 @@ function introPrompt() {
             ]
         }
     ]).then(function (answer) {
+        console.log("outside if statement")
         if (answer.menu === "view all departments") {
+            console.log("in if statement")
             getAllDepartments()
         }
     })

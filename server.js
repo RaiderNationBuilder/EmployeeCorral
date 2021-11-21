@@ -1,6 +1,8 @@
 const db = require('./db/connection');
-
+const express = require('express')
 const PORT = process.env.PORT || 3001;
+
+const app = express();
 
 // Default response for any other request (Not Found)
 app.use((req, res) => {
