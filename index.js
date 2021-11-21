@@ -12,14 +12,6 @@ db.connect(function (err) {
     if (err) console.log("error connecting: ", err);
 });
 
-// db.query(seedQuery, err => {
-//     if (err) {
-//         throw err
-//     }
-
-//     console.log("db seeded")
-// })
-
 function introPrompt() {
 
     inquirer.prompt([
@@ -37,11 +29,11 @@ function introPrompt() {
                 "update an employee role"
             ]
         }
-    ]).then(function (answer) {
-        console.log("outside if statement")
+    ]).then(function (answer) {        
         if (answer.menu === "view all departments") {
-            console.log("in if statement")
             getAllDepartments()
+        } else if (answer.menu === "view all roles") {
+            getAllRoles()
         }
     })
 }
@@ -51,6 +43,16 @@ function getAllDepartments() {
     console.log("in function")
     db.query(
         `SELECT * FROM department`,
+        function (err, results) {
+            console.log("in function x2")
+            console.log("results", results)
+            console.table(results)
+        });
+}
+
+function getAllRoles() {
+    db.query(
+        `SELECT * FROM roles`,
         function (err, results) {
             console.log("in function x2")
             console.log("results", results)
