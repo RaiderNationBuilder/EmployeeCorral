@@ -10,13 +10,13 @@ const seedQuery = fs.readFileSync("db/seed.sql", {
 
 db.connect()
 
-db.query(seedQuery, err => {
-    if (err) {
-        throw err
-    }
+// db.query(seedQuery, err => {
+//     if (err) {
+//         throw err
+//     }
 
-    console.log("db seeded")
-})
+//     console.log("db seeded")
+// })
 
 function introPrompt() {
 
@@ -51,7 +51,7 @@ function getAllDepartments(){
         `SELECT * FROM department`,
         function(err, results, fields) {
             console.log("in function x2")  
-            console.log(fields)
+            console.log("results", results)
 
     });
 }
