@@ -38,6 +38,8 @@ function introPrompt() {
             getAllEmployees()
         } else if (answer.menu === "add a department") {
             addDepartment()
+        } else if (answer.menu === "add a role") {
+            addRole()
         }
     })
 }
@@ -50,7 +52,7 @@ function getAllDepartments() {
         function (err, results) {
             console.table(results)
         });
-}
+};
 
 function addDepartment() {
     inquirer.prompt(
@@ -62,14 +64,15 @@ function addDepartment() {
     ).then(function (answer) {
         console.log(answer.name)
         db.query(
-            `INSERT INTO department (name) VALUES (${answer.name})`, function (err, result) {
+            `INSERT INTO department (name) VALUES (${answer.name});`,
+            function (err, result) {
                 if (err) {
                     throw err
-                } else{
-                console.log("1 record inserted");
-                getAllDepartments();
+                } else {
+                    console.log("1 record inserted");
+                    getAllDepartments();
                 }
-              });
+            });
     });
 };
 
@@ -79,7 +82,36 @@ function getAllRoles() {
         function (err, results) {
             console.table(results)
         });
-}
+};
+
+function addRole() {
+    inquirer.prompt([
+        {
+            type: "input",
+            name: "title",
+            message: "Whats the title of the role you would like to add?",
+        },
+        {
+            type: "input",
+            name: "salary",
+            message: "Whats the salary of the role you would like to add?",
+        },
+        {
+            type: "input",
+            name: "departmentId",
+            message: "Whats the department id of the role you would like to add?",
+        }
+    ]).then(function (answer) {
+        if (answer) {
+            console.log(answer)
+            db.query(
+                `INSERT INTO roles (title, salary, department_id) VALUES (${answer.title, answer.salary, answer.departmentId});`,
+                function (err, results) {
+                    getAllRoles();
+                });
+        }
+    });
+};
 
 function getAllEmployees() {
     db.query(
@@ -87,7 +119,7 @@ function getAllEmployees() {
         function (err, results) {
             console.table(results)
         });
-}
+};
 
 introPrompt();
 
