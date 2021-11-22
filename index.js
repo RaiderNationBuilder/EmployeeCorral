@@ -40,6 +40,10 @@ function introPrompt() {
             addDepartment()
         } else if (answer.menu === "add a role") {
             addRole()
+        } else if (answer.menu === "add an employees") {
+            addEmployee()
+        } else if (answer.menu === "update an employee role") {
+            updateEmployeeRole()
         }
     })
 }
@@ -63,9 +67,9 @@ function addDepartment() {
         }
     ).then(function (answer) {
         console.log(answer.name)
-        db.query(
-            `INSERT INTO department (name) VALUES (${answer.name});`,
-            function (err, result) {
+        db.query(`INSERT INTO department (name) VALUES (?);`,
+         [answer.name],
+         function (err, result) { 
                 if (err) {
                     throw err
                 } else {
@@ -105,7 +109,8 @@ function addRole() {
         if (answer) {
             console.log(answer)
             db.query(
-                `INSERT INTO roles (title, salary, department_id) VALUES (${answer.title, answer.salary, answer.departmentId});`,
+                `INSERT INTO roles (title, salary, department_id) VALUES (?, ?, ?);`,
+                [answer.title, answer.salary,answer.departmentId],
                 function (err, results) {
                     getAllRoles();
                 });
@@ -119,6 +124,41 @@ function getAllEmployees() {
         function (err, results) {
             console.table(results)
         });
+};
+
+function addEmployee() {
+    inquirer.prompt([
+        {
+            type: "input",
+            name: "firstName",
+            message: "Whats the First Name of the employee you would like to add?",
+        },
+        {
+            type: "input",
+            name: "lastName",
+            message: "Whats the Last Name of the employee you would like to add?",
+        },
+        {
+            type: "input",
+            name: "roleId",
+            message: "Whats the role of the employee you would like to add?",
+        },
+        {
+            type: "input",
+            name: "managerId",
+            message: "Does the new employee have a manager you would like to add?",
+        }
+    ]).then(function (answer) {
+        if (answer) {
+            console.log(answer)
+            db.query(
+                `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?);`,
+                [answer.firstName, answer.lastName, answer.roleId, answer.managerId],
+                function (err, results) {
+                    getAllEmployees();
+                });
+        }
+    });
 };
 
 introPrompt();
