@@ -161,5 +161,40 @@ function addEmployee() {
     });
 };
 
+function updateEmployeeRole() {
+    inquirer.prompt([
+        {
+            type: "input",
+            name: "firstName",
+            message: "Whats the First Name of the employee you would like to add?",
+        },
+        {
+            type: "input",
+            name: "lastName",
+            message: "Whats the Last Name of the employee you would like to add?",
+        },
+        {
+            type: "input",
+            name: "roleId",
+            message: "Whats the role of the employee you would like to add?",
+        },
+        {
+            type: "input",
+            name: "managerId",
+            message: "Does the new employee have a manager you would like to add?",
+        }
+    ]).then(function (answer) {
+        if (answer) {
+            console.log(answer)
+            db.query(
+                `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?);`,
+                [answer.firstName, answer.lastName, answer.roleId, answer.managerId],
+                function (err, results) {
+                    getAllEmployees();
+                });
+        }
+    });
+};
+
 introPrompt();
 
