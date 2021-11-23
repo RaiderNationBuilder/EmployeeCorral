@@ -189,7 +189,7 @@ function updateEmployeeRole() {
                     db.query(
                         `UPDATE employee SET role_id = ?
                         WHERE id = ?`,
-                        [roleId, answer.role],
+                        [answer.role, roleId],
                         function (err, results) {
                             if (!err) {
                             console.log('in update callback', results)
