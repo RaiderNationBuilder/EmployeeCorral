@@ -68,8 +68,8 @@ function addDepartment() {
     ).then(function (answer) {
         console.log(answer.name)
         db.query(`INSERT INTO department (name) VALUES (?);`,
-         [answer.name],
-         function (err, result) { 
+            [answer.name],
+            function (err, result) {
                 if (err) {
                     throw err
                 } else {
@@ -110,7 +110,7 @@ function addRole() {
             console.log(answer)
             db.query(
                 `INSERT INTO roles (title, salary, department_id) VALUES (?, ?, ?);`,
-                [answer.title, answer.salary,answer.departmentId],
+                [answer.title, answer.salary, answer.departmentId],
                 function (err, results) {
                     getAllRoles();
                 });
@@ -162,37 +162,52 @@ function addEmployee() {
 };
 
 function updateEmployeeRole() {
+    getAllEmployees();
+
     inquirer.prompt([
         {
             type: "input",
             name: "firstName",
-            message: "Whats the First Name of the employee you would like to add?",
+            message: "Whats the First Name of the employee you would like to update?",
         },
         {
             type: "input",
             name: "lastName",
-            message: "Whats the Last Name of the employee you would like to add?",
+            message: "Whats the Last Name of the employee you would like to update?",
         },
         {
             type: "input",
-            name: "roleId",
-            message: "Whats the role of the employee you would like to add?",
-        },
-        {
-            type: "input",
-            name: "managerId",
-            message: "Does the new employee have a manager you would like to add?",
+            name: "role",
+            message: "Whats the new role of the employee you would like to update?",
         }
     ]).then(function (answer) {
-        if (answer) {
-            console.log(answer)
-            db.query(
-                `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?);`,
-                [answer.firstName, answer.lastName, answer.roleId, answer.managerId],
-                function (err, results) {
-                    getAllEmployees();
-                });
-        }
+        db.query(`SELECT id FROM employee WHERE first_name = ? AND last_name = ?;`,
+            [answer.firstName, answer.lastName],
+            function (err, results) {
+                var roleId = results[0].id
+                if (roleId) {
+                    db.query(
+                        `UPDATE employee SET role_id = ?
+                        WHERE id = ?`,
+                        [roleId, answer.role],
+                        function (err, results) {
+                            if (!err) {
+                            console.log('in update callback', results)
+                            getAllEmployees();
+                            } else {
+                                console.log('somthing is fishy')
+                            }
+                        });
+                }
+            });
+
+    });
+
+    if (err) throw err;
+    var sql = "SELECT users.name AS user, products.name AS favorite FROM users JOIN products ON users.favorite_product = products.id";
+    con.query(sql, function (err, result) {
+        if (err) throw err;
+        console.log(result);
     });
 };
 
